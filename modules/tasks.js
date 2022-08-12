@@ -16,22 +16,11 @@ export default class Tasks {
     }
 
     // Methods
-    AddTask(toDo,boolean,counter) {
-        this.#tasks.push({
+    AddTask(toDo, completed, index) {
+      this.#tasks.push({
         toDo,
-        boolean,
-        counter,
-      });
-    }
-
-    DeleteTask(id) {
-      const localTasks = this.#tasks;
-
-      this.#tasks = localBooks.filter((tasks) => {
-        if (tasks.id !== id) {
-          return true;
-        }
-        return false;
+        completed,
+        index,
       });
     }
 

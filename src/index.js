@@ -1,13 +1,12 @@
 import './style.css';
 import Tasks from '../modules/tasks.js';
+
 const myTasks = new Tasks();
 myTasks.LoadTaskFromLocal();
-
-let counter = 1;
-
-//HTML Management
+let index = 1;
+// HTML Management
 const container = document.querySelector('.container');
-container.innerHTML= `<div class="title">
+container.innerHTML = `<div class="title">
 <h1>Today's To Do</h1>
 <span class="material-symbols-outlined"><a  href="">sync</a></span>
 </div>`;
@@ -16,40 +15,62 @@ list.classList.add('list');
 const input = document.createElement('div');
 input.classList.add('input');
 const clear = document.createElement('div');
-clear.innerHTML= `<p>Clear all completed</p>`;
+clear.innerHTML = '<p>Clear all completed</p>';
 clear.classList.add('clear');
 container.appendChild(input);
-container.appendChild(list);  
-container.appendChild(clear);  
+container.appendChild(list);
+container.appendChild(clear);
 
-input.innerHTML=`
+input.innerHTML = `
 <input type="text" id="toDo" placeholder="Add to your list..." required>
-<span class="material-symbols-outlined" id>
+<span class="material-symbols-outlined">
 subdirectory_arrow_left
 </span>`;
 
-document.getElementById('toDo').addEventListener('keypress',(e) => {
-let toDo = document.getElementById('toDo').value;
-if (e.key === 'Enter' && toDo !=="") {
-myTasks.AddTask(toDo,false,counter);
-myTasks.SaveTaskLocal();
-counter ++;
-console.log('si');
-render();
-}
-});
-
-//View
+// View
 const render = () => {
-    document.querySelector('.list').innerHTML = '';
-    if (myTasks.Tasks) {
-      myTasks.Tasks.forEach((tasks) => {
-        const element = document.createElement('li');
-        element.innerHTML  = `<input type="checkbox">${tasks.toDo}`;
-        element.classList.add('eachtask');       
-        list.appendChild(element);  
-        });
+  document.querySelector('.list').innerHTML = '';
+  if (myTasks.Tasks) {
+    myTasks.Tasks.forEach((tasks) => {
+      const element = document.createElement('li');
+      element.innerHTML = `<input type="checkbox"><span class="text"contenteditable="true">${tasks.toDo}</span>`;
+      const removeIcon = document.createElement('span');
+      removeIcon.classList.add('material-symbols-outlined');
+      removeIcon.classList.add('removeIcon');
+      removeIcon.textContent = 'delete';
+      element.appendChild(removeIcon);
+      element.classList.add('eachtask');
+      element.setAttribute('id', tasks.index);
+      list.appendChild(element);
+    });
+  }
+  const removeBtns = document.querySelectorAll('.removeIcon');
 
-        }
-    };
+  removeBtns.forEach((elem, id) => {
+    elem.addEventListener('click', () => {
+      let tasks = JSON.parse(localStorage.getItem('tasks'));
+      elem.parentElement.remove();
+      tasks.splice(id, 1);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      tasks = JSON.parse(localStorage.getItem('tasks'));
+      for (let i = 0; i < tasks.length; i += 1) {
+        tasks[i].index = i + 1;
+      }
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      window.location.reload();
+    });
+  });
+};
+
+document.getElementById('toDo').addEventListener('keypress', (e) => {
+  const toDo = document.getElementById('toDo').value;
+  if (e.key === 'Enter' && toDo !== '') {
+    myTasks.AddTask(toDo, false, index);
+    myTasks.SaveTaskLocal();
+    const filed = document.getElementById('toDo');
+    filed.value = '';
+    index += 1;
     render();
+  }
+});
+render();
