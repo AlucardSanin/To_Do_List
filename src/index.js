@@ -1,5 +1,6 @@
 import './style.css';
 import Tasks from './modules/tasks.js';
+import { removeTaskAddEvents } from './modules/remove.js';
 
 const myTasks = new Tasks();
 myTasks.LoadTaskFromLocal();
@@ -25,24 +26,7 @@ input.innerHTML = `
 <span class="material-symbols-outlined">
 subdirectory_arrow_left
 </span>`;
-const removeTask = (elem, id) => {
-  let tasks = JSON.parse(localStorage.getItem('tasks'));
-  elem.parentElement.remove();
-  tasks.splice(id, 1);
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-  tasks = JSON.parse(localStorage.getItem('tasks'));
-  for (let i = 0; i < tasks.length; i += 1) {
-    tasks[i].index = i + 1;
-  }
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-};
-const removeTaskAddEvents = (elem, id) => {
-  elem.dataset.taskId = id;
-  elem.addEventListener('click', () => {
-    removeTask(elem, id);
-    window.location.reload();
-  });
-};
+
 // View
 const render = () => {
   document.querySelector('.list').innerHTML = '';
@@ -82,9 +66,7 @@ document.getElementById('toDo').addEventListener('keypress', (e) => {
     render();
   }
 });
-document.querySelector('.title a').addEventListener('click', (e) => {
-  e.preventDefault();
-});
+
 document.querySelector('.clear').addEventListener('click', (e) => {
   e.preventDefault();
   myTasks.getNotCompletedTask().forEach((task, index) => {
@@ -93,4 +75,9 @@ document.querySelector('.clear').addEventListener('click', (e) => {
   myTasks.SetTasks(myTasks.getNotCompletedTask());
   render();
 });
+
+if (myTasks.getCompletedTask().length > 0) {
+  document.querySelector('.clear').style.backgroundColor = 'rgb(128, 224, 229)';
+  document.querySelector('.clear p').style.color = 'white';
+}
 render();
