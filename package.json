@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlucardSanin/Webpack_Boilerplate.git"
+    "url": "git+https://github.com/AlucardSanin/To_Do_List"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AlucardSanin/Webpack_Boilerplate/issues"
+    "url": "https://github.com/AlucardSanin/To_Do_List"
   },
-  "homepage": "https://github.com/AlucardSanin/Webpack_Boilerplate#readme",
+  "homepage": "https://github.com/AlucardSanin/To_Do_List",
   "devDependencies": {
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
