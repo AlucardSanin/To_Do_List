@@ -4,7 +4,7 @@ import { removeTaskAddEvents } from './modules/remove.js';
 
 const myTasks = new Tasks();
 myTasks.LoadTaskFromLocal();
-let index = 1;
+
 // HTML Management
 const container = document.querySelector('.container');
 container.innerHTML = `<div class="title">
@@ -18,7 +18,7 @@ input.classList.add('input');
 const clear = document.createElement('div');
 clear.innerHTML = '<p>Clear all completed</p>';
 clear.classList.add('clear');
-container.appendChild(input);
+container.appendChild(input, list, clear);
 container.appendChild(list);
 container.appendChild(clear);
 input.innerHTML = `
@@ -35,8 +35,7 @@ const render = () => {
       const element = document.createElement('li');
       element.innerHTML = `<input type="checkbox"  ${tasks.completed ? 'checked=true' : ''}><span class="text"contenteditable="true">${tasks.toDo}</span>`;
       const removeIcon = document.createElement('span');
-      removeIcon.classList.add('material-symbols-outlined');
-      removeIcon.classList.add('removeIcon');
+      removeIcon.classList.add('material-symbols-outlined', 'removeIcon');
       removeIcon.textContent = 'delete';
       element.appendChild(removeIcon);
       element.classList.add('eachtask');
@@ -58,6 +57,7 @@ const render = () => {
 };
 document.getElementById('toDo').addEventListener('keypress', (e) => {
   const toDo = document.getElementById('toDo').value;
+  let index = 1;
   if (e.key === 'Enter' && toDo !== '') {
     myTasks.AddTask(toDo, false, index);
     const filed = document.getElementById('toDo');
@@ -67,7 +67,7 @@ document.getElementById('toDo').addEventListener('keypress', (e) => {
   }
 });
 
-document.querySelector('.clear').addEventListener('click', (e) => {
+clear.addEventListener('click', (e) => {
   e.preventDefault();
   myTasks.getNotCompletedTask().forEach((task, index) => {
     task.index = index;
@@ -76,8 +76,4 @@ document.querySelector('.clear').addEventListener('click', (e) => {
   render();
 });
 
-if (myTasks.getCompletedTask().length > 0) {
-  document.querySelector('.clear').style.backgroundColor = 'rgb(128, 224, 229)';
-  document.querySelector('.clear p').style.color = 'white';
-}
 render();
