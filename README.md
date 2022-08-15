@@ -1,10 +1,5 @@
 ![](https://img.shields.io/badge/Microverse-blueviolet)
 
-## Deployment
-
-> Description the project.
-
-
 ## Built With
 
 - HTML
@@ -14,7 +9,8 @@
 
 ### Prerequisites
  - Web browser and code editor of your choice
- - 
+ 
+ 
 ### Setup
 ~~~
 git clone 
